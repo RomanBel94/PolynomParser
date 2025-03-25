@@ -19,8 +19,13 @@ private:
     bool line_added;
 
     inline void reset();
+    inline void extract_tokens();
+    inline void preparsing_check();
+    inline void postparsing_check();
     inline void switch_polynoms() noexcept;
+    inline void switch_lines() noexcept;
     inline void add_values(const Token& power, const Token& base);
+    inline void parsing_loop();
 
 public:
     Parser();
