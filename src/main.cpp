@@ -1,4 +1,4 @@
-#include "PolynomProcessor.h"
+#include "PolynomProcessor.hpp"
 
 int main()
 {
@@ -53,8 +53,8 @@ int main()
     for (const auto& [power, base] : parser.get_polynom2())
         std::cout << "[DEBUG] Power: " << power << ", base: " << base << '\n';
 
-    PolynomProcessor proc;
-    auto result = proc(std::plus());
+    PolynomProcessor proc{std::plus<int>()};
+    auto result = proc();
 
     std::cout << "[DEBUG] Result: \n";
     for (const auto& [power, base] : result)

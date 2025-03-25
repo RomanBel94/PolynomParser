@@ -53,6 +53,13 @@ void Parser::parse()
 
     if (lexer.get_tokens().empty())
         throw std::runtime_error("[FATAL] Can't parse input file!\n");
+    if (std::count_if(std::begin(lexer.get_tokens()),
+                      std::end(lexer.get_tokens()), [](const Token& tok)
+                      { return tok.type == TokenType::Number; }) %
+            2 ==
+        1)
+        throw std::runtime_error(
+            "[FATAL] Odd count of numbers is not permitted!\n");
 
     auto current_token{lexer.get_tokens().cbegin()};
     auto next_token{current_token};
@@ -83,16 +90,8 @@ void Parser::parse()
         }
         else if (*current_token == TokenType::Newline)
         {
-            if (line_added)
-            {
-                ++current_line;
-                line_added = false;
-            }
-            else
-            {
-                reset();
-                throw std::runtime_error("[FATAL] Wrong count of numbers!\n");
-            }
+            ++current_line;
+            line_added = false;
         }
     }
 

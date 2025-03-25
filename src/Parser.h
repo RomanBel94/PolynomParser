@@ -1,5 +1,6 @@
 #ifndef PARSER_H
 #include "Lexer.h"
+#include <algorithm>
 #include <map>
 
 namespace LexerParser
