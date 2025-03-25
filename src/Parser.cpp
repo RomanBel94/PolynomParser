@@ -45,8 +45,7 @@ void Parser::preparsing_check()
     if (std::count_if(std::begin(lexer.get_tokens()),
                       std::end(lexer.get_tokens()), [](const Token& tok)
                       { return tok.type == TokenType::Number; }) %
-            2 ==
-        1)
+        2)
         throw std::runtime_error(
             "[FATAL] Odd count of numbers is not permitted!\n");
 }
