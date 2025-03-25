@@ -18,20 +18,18 @@ int main()
         switch (token.type)
         {
         case LexerParser::TokenType::Newline:
-            std::cout << "[DEBUG] Token type: Newline; "
-                      << "token value: \\n\n";
+            std::cout << "[DEBUG] Token type: Newline; token value: \\n\n";
             break;
         case LexerParser::TokenType::Number:
-            std::cout << "[DEBUG] Token type: Number; "
-                      << "token value: " << token.value << '\n';
+            std::cout << "[DEBUG] Token type: Number; token value: "
+                      << token.value << '\n';
             break;
         case LexerParser::TokenType::Eof:
-            std::cout << "[DEBUG] Token type: Eof; "
-                      << "token value: eof()\n";
+            std::cout << "[DEBUG] Token type: Eof; token value: eof()\n";
             break;
         default:
-            std::cout << "[DEBUG] Token type: Undefined; "
-                      << "token value: " << token.value << '\n';
+            std::cout << "[DEBUG] Token type: Undefined; token value: "
+                      << token.value << '\n';
         }
     }
 
