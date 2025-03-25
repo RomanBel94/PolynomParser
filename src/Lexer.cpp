@@ -3,7 +3,7 @@
 namespace LexerParser
 {
 /*
-    Constructor. Open input file and read first char.
+    Constructor. Initialize all fields.
 */
 Lexer::Lexer()
     : current_token_type(TokenType::Undefined), current_token_value(""),
@@ -21,6 +21,27 @@ void Lexer::skip_spaces()
 }
 
 /*
+    Read newline symbol.
+*/
+void Lexer::process_newline()
+{
+    current_token_value += current_char;
+    ++current_line;
+}
+
+/*
+    Read sequence of symbols.
+*/
+void Lexer::process_sequence()
+{
+    while (!isspace(current_char) && !input_file.eof())
+    {
+        current_token_value += current_char;
+        current_char = input_file.get();
+    }
+}
+
+/*
     Exstract next token, and add it to token list.
 */
 void Lexer::read_token()
@@ -35,16 +56,11 @@ void Lexer::read_token()
 
     if (current_char == '\n')
     {
-        current_token_value += current_char;
-        ++current_line;
+        process_newline();
     }
     else
     {
-        while (!isspace(current_char) && !input_file.eof())
-        {
-            current_token_value += current_char;
-            current_char = input_file.get();
-        }
+        process_sequence();
     }
     add_token();
 }

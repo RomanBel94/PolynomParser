@@ -17,8 +17,6 @@ enum class TokenType : unsigned char
     Eof
 };
 
-// ------------------------------------------------------------------------
-
 /*
     Struct for token description
 */
@@ -37,10 +35,12 @@ struct Token
     {
         return this->type == rhs;
     }
+
     inline bool Token::operator!=(TokenType rhs) const
     {
         return this->type != rhs;
     }
+
     inline Token::operator TokenType() const { return type; }
     inline Token::operator int() const { return value; }
 
@@ -51,8 +51,6 @@ private:
     const Token& operator=(const Token&) = delete;
     Token&& operator=(Token&&) noexcept = delete;
 };
-
-// ------------------------------------------------------------------------
 
 /*
     Lexer extracts tokens from input file
@@ -68,9 +66,11 @@ private:
     char current_char;
 
     inline void skip_spaces();
-    void read_token();
-    void define_token_type();
-    void add_token();
+    inline void process_newline();
+    inline void process_sequence();
+    inline void read_token();
+    inline void define_token_type();
+    inline void add_token();
     inline void add_eof();
     inline void reset_current_token();
     inline bool is_number(const std::string& token);
