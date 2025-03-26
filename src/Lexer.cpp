@@ -7,7 +7,7 @@ namespace LexerParser
 */
 Lexer::Lexer()
     : current_token_type(TokenType::Undefined), current_token_value(""),
-      current_char('\0'), current_line(1)
+      current_char('\0'), current_line(1), number_regex("\\d+")
 {
 }
 
@@ -72,7 +72,7 @@ void Lexer::define_token_type()
 {
     if (current_token_value == "\n")
         current_token_type = TokenType::Newline;
-    else if (is_number(current_token_value))
+    else if (std::regex_match(current_token_value, number_regex))
         current_token_type = TokenType::Number;
     else
     {
@@ -118,18 +118,6 @@ void Lexer::reset_current_token()
 
     current_token_type = TokenType::Undefined;
     current_token_value.clear();
-}
-
-/*
-    Check if string is number.
-*/
-bool Lexer::is_number(const std::string& token)
-{
-    for (char symbol : token)
-        if (!isdigit(symbol))
-            return false;
-
-    return true;
 }
 
 /*

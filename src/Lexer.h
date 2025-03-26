@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <regex>
 #include <sstream>
 
 namespace LexerParser
@@ -59,6 +60,7 @@ class Lexer
 {
 private:
     std::ifstream input_file;
+    const std::regex number_regex;
     std::string current_token_value;
     std::list<Token> tokens;
     size_t current_line;
@@ -73,7 +75,6 @@ private:
     inline void add_token();
     inline void add_eof();
     inline void reset_current_token();
-    inline bool is_number(const std::string& token);
 
 public:
     Lexer();
