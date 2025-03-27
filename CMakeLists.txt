@@ -19,6 +19,8 @@ add_library(
 add_executable(run_tests src/main.cpp)
 target_link_libraries(run_tests PRIVATE ${PROJECT_NAME})
 
+add_executable(test_polynom_generator src/generator.cpp)
+
 add_custom_command(
 	TARGET run_tests
 	POST_BUILD
