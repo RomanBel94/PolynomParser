@@ -38,7 +38,7 @@ public:
 
     void extract();
 
-    inline const std::list<Token>& Lexer::get_tokens() const { return tokens; }
+    inline const std::list<Token>& get_tokens() const { return tokens; }
 };
 
 }; // namespace LexerParser

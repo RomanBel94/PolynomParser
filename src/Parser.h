@@ -33,8 +33,8 @@ public:
 
     void parse();
 
-    inline std::map<int, int>& Parser::get_polynom1() { return polynom1; }
-    inline std::map<int, int>& Parser::get_polynom2() { return polynom2; }
+    inline std::map<int, int>& get_polynom1() { return polynom1; }
+    inline std::map<int, int>& get_polynom2() { return polynom2; }
 };
 }; // namespace LexerParser
 

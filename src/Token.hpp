@@ -25,18 +25,12 @@ struct Token
     }
     ~Token() = default;
 
-    inline bool Token::operator==(TokenType rhs) const
-    {
-        return this->type == rhs;
-    }
+    inline bool operator==(TokenType rhs) const { return this->type == rhs; }
 
-    inline bool Token::operator!=(TokenType rhs) const
-    {
-        return this->type != rhs;
-    }
+    inline bool operator!=(TokenType rhs) const { return this->type != rhs; }
 
-    inline Token::operator TokenType() const { return type; }
-    inline Token::operator int() const { return value; }
+    inline operator TokenType() const { return type; }
+    inline operator int() const { return value; }
 
 private:
     Token() = delete;
