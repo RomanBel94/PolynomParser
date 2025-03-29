@@ -26,6 +26,7 @@ void Lexer::skip_spaces()
 void Lexer::process_newline()
 {
     current_token_value += current_char;
+    current_token_type = TokenType::Newline;
     ++current_line;
 }
 
@@ -38,6 +39,16 @@ void Lexer::process_sequence()
     {
         current_token_value += current_char;
         current_char = input_file.get();
+    }
+    if (std::regex_match(current_token_value, number_regex))
+        current_token_type = TokenType::Number;
+    else
+    {
+        tokens.clear();
+        std::ostringstream error_message;
+        error_message << "[FATAL] Invalid token \"" << current_token_value
+                      << "\" at line: " << current_line << '\n';
+        throw std::runtime_error(error_message.str());
     }
 }
 
@@ -66,31 +77,10 @@ void Lexer::read_token()
 }
 
 /*
-    Define type of extracted token.
-*/
-void Lexer::define_token_type()
-{
-    if (current_token_value == "\n")
-        current_token_type = TokenType::Newline;
-    else if (std::regex_match(current_token_value, number_regex))
-        current_token_type = TokenType::Number;
-    else
-    {
-        tokens.clear();
-        std::ostringstream error_message;
-        error_message << "[FATAL] Invalid token \"" << current_token_value
-                      << "\" at line: " << current_line << '\n';
-        throw std::runtime_error(error_message.str());
-    }
-}
-
-/*
     Create token and add it to the token list.
 */
 void Lexer::add_token()
 {
-    define_token_type();
-
     if (current_token_type == TokenType::Number)
         tokens.emplace_back(current_token_type, std::stoi(current_token_value));
     else if (current_token_type == TokenType::Newline)

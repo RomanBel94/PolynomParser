@@ -27,7 +27,6 @@ private:
     inline void process_newline();
     inline void process_sequence();
     inline void read_token();
-    inline void define_token_type();
     inline void add_token();
     inline void add_eof();
     inline void reset_current_token();
