@@ -19,32 +19,35 @@ private:
 public:
     LexerContext() = default;
 
-    void go_to_next_line() noexcept
+    inline void go_to_next_line() noexcept
     {
         ++current_line;
         reset_current_char_pos();
     }
-    size_t get_current_line() const noexcept { return current_line; }
+    inline size_t get_current_line() const noexcept { return current_line; }
 
-    void go_to_next_char() noexcept { ++current_char_pos; }
-    void reset_current_char_pos() noexcept { current_char_pos = 0; }
-    size_t get_current_char_pos() const noexcept { return current_char_pos; }
+    inline void go_to_next_char() noexcept { ++current_char_pos; }
+    inline void reset_current_char_pos() noexcept { current_char_pos = 0; }
+    inline size_t get_current_char_pos() const noexcept
+    {
+        return current_char_pos;
+    }
 
-    void set_current_token_type(TokenType new_type) noexcept
+    inline void set_current_token_type(TokenType new_type) noexcept
     {
         current_token_type = new_type;
     }
-    TokenType get_current_token_type() const noexcept
+    inline TokenType get_current_token_type() const noexcept
     {
         return current_token_type;
     }
 
-    void set_current_char(char ch) noexcept
+    inline void set_current_char(char ch) noexcept
     {
         current_char = ch;
         go_to_next_char();
     }
-    char get_current_char() const noexcept { return current_char; }
+    inline char get_current_char() const noexcept { return current_char; }
 };
 
 /*
