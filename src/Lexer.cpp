@@ -2,22 +2,21 @@
 
 namespace LexerParser
 {
+const std::regex Lexer::number_regex{R"(\d+)"};
+
 /*
     Constructor. Initialize all fields.
 */
-Lexer::Lexer()
-    : current_token_type(TokenType::Undefined), current_token_value(""),
-      current_char('\0'), current_line(1), number_regex("\\d+")
-{
-}
+Lexer::Lexer() : current_token_value("") {}
 
 /*
     Skip any space excluding newline symbol.
 */
 void Lexer::skip_spaces()
 {
-    while (isspace(current_char) && current_char != '\n')
-        current_char = input_file.get();
+    while (isspace(context.get_current_char()) &&
+           context.get_current_char() != '\n')
+        context.set_current_char(input_file.get());
 }
 
 /*
@@ -25,9 +24,9 @@ void Lexer::skip_spaces()
 */
 void Lexer::process_newline()
 {
-    current_token_value += current_char;
-    current_token_type = TokenType::Newline;
-    ++current_line;
+    current_token_value += context.get_current_char();
+    context.set_current_token_type(TokenType::Newline);
+    context.go_to_next_line();
 }
 
 /*
@@ -35,19 +34,19 @@ void Lexer::process_newline()
 */
 void Lexer::process_sequence()
 {
-    while (!isspace(current_char) && !input_file.eof())
+    while (!isspace(context.get_current_char()) && !input_file.eof())
     {
-        current_token_value += current_char;
-        current_char = input_file.get();
+        current_token_value += context.get_current_char();
+        context.set_current_char(input_file.get());
     }
     if (std::regex_match(current_token_value, number_regex))
-        current_token_type = TokenType::Number;
+        context.set_current_token_type(TokenType::Number);
     else
     {
         tokens.clear();
         std::ostringstream error_message;
         error_message << "[FATAL] Invalid token \"" << current_token_value
-                      << "\" at line: " << current_line << '\n';
+                      << "\" at line: " << context.get_current_line() << '\n';
         throw std::runtime_error(error_message.str());
     }
 }
@@ -65,7 +64,7 @@ void Lexer::read_token()
 
     skip_spaces();
 
-    if (current_char == '\n')
+    if (context.get_current_char() == '\n')
     {
         process_newline();
     }
@@ -81,10 +80,11 @@ void Lexer::read_token()
 */
 void Lexer::add_token()
 {
-    if (current_token_type == TokenType::Number)
-        tokens.emplace_back(current_token_type, std::stoi(current_token_value));
-    else if (current_token_type == TokenType::Newline)
-        tokens.emplace_back(current_token_type, '\n');
+    if (context.get_current_token_type() == TokenType::Number)
+        tokens.emplace_back(context.get_current_token_type(),
+                            std::stoi(current_token_value));
+    else if (context.get_current_token_type() == TokenType::Newline)
+        tokens.emplace_back(context.get_current_token_type(), '\n');
 
     reset_current_token();
 }
@@ -94,8 +94,8 @@ void Lexer::add_token()
 */
 void Lexer::add_eof()
 {
-    current_token_type = TokenType::Eof;
-    tokens.emplace_back(current_token_type);
+    context.set_current_token_type(TokenType::Eof);
+    tokens.emplace_back(context.get_current_token_type());
 }
 
 /*
@@ -103,10 +103,10 @@ void Lexer::add_eof()
 */
 void Lexer::reset_current_token()
 {
-    if (current_token_type == TokenType::Newline)
-        current_char = input_file.get();
+    if (context.get_current_token_type() == TokenType::Newline)
+        context.set_current_char(input_file.get());
 
-    current_token_type = TokenType::Undefined;
+    context.set_current_token_type(TokenType::Undefined);
     current_token_value.clear();
 }
 
@@ -122,9 +122,9 @@ void Lexer::extract()
         throw std::runtime_error("[FATAL] Can't open input file!\n");
     }
     else
-        current_char = input_file.get();
+        context.set_current_char(input_file.get());
 
-    while (current_token_type != TokenType::Eof)
+    while (context.get_current_token_type() != TokenType::Eof)
         read_token();
 }
 

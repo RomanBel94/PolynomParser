@@ -3,25 +3,49 @@
 #include <iostream>
 #include <list>
 #include <regex>
-#include <sstream>
 
 #include "Token.hpp"
 
 namespace LexerParser
 {
+class LexerContext
+{
+private:
+    size_t current_line{1};
+    char current_char{'\0'};
+    TokenType current_token_type{TokenType::Undefined};
+
+public:
+    LexerContext() = default;
+
+    void go_to_next_line() noexcept { ++current_line; }
+    size_t get_current_line() const noexcept { return current_line; }
+
+    void set_current_token_type(TokenType new_type) noexcept
+    {
+        current_token_type = new_type;
+    }
+    TokenType get_current_token_type() const noexcept
+    {
+        return current_token_type;
+    }
+
+    void set_current_char(char ch) noexcept { current_char = ch; }
+    char get_current_char() const noexcept { return current_char; }
+};
+
 /*
     Lexer extracts tokens from input file
 */
 class Lexer
 {
 private:
+    static const std::regex number_regex;
+
     std::ifstream input_file;
-    const std::regex number_regex;
+    LexerContext context;
     std::string current_token_value;
     std::list<Token> tokens;
-    size_t current_line;
-    TokenType current_token_type;
-    char current_char;
 
     inline void skip_spaces();
     inline void process_newline();

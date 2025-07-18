@@ -26,19 +26,18 @@ private:
     inline bool parse_polynoms();
 
 public:
-    explicit PolynomProcessor(BinaryOperator&& op);
+    PolynomProcessor();
     ~PolynomProcessor() = default;
 
-    std::map<int, int> operator()();
+    const std::map<int, int> operator()();
 };
 
 /*
     Constructor.
 */
 template <class BinaryOperator>
-PolynomProcessor<BinaryOperator>::PolynomProcessor(BinaryOperator&& op)
-    : op(std::forward<BinaryOperator>(op)), polynom1(parser.get_polynom1()),
-      polynom2(parser.get_polynom2()){};
+PolynomProcessor<BinaryOperator>::PolynomProcessor()
+    : polynom1(parser.get_polynom1()), polynom2(parser.get_polynom2()){};
 
 /*
     Return number of necessary iterations for processing polynoms.
@@ -72,7 +71,7 @@ inline bool PolynomProcessor<BinaryOperator>::parse_polynoms()
     Main function of processing polynoms.
 */
 template <class BinaryOperator>
-std::map<int, int> PolynomProcessor<BinaryOperator>::operator()()
+const std::map<int, int> PolynomProcessor<BinaryOperator>::operator()()
 {
     if (!result_polynom.empty())
         return result_polynom;

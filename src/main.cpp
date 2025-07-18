@@ -51,14 +51,14 @@ int main()
     for (const auto& [power, base] : parser.get_polynom2())
         std::cout << "[DEBUG] Power: " << power << ", base: " << base << '\n';
 
-    PolynomProcessor adder{std::plus<int>()};
+    PolynomProcessor<std::plus<int>> adder;
     auto result = adder();
 
     std::cout << "[DEBUG] Adder result: \n";
     for (const auto& [power, base] : result)
         std::cout << "[DEBUG] Power: " << power << ", base: " << base << '\n';
 
-    PolynomProcessor multiplier{std::multiplies<int>()};
+    PolynomProcessor<std::multiplies<int>> multiplier;
     result = multiplier();
 
     std::cout << "[DEBUG] Multiplier result: \n";
