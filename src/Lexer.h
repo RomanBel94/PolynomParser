@@ -12,14 +12,23 @@ class LexerContext
 {
 private:
     size_t current_line{1};
+    size_t current_char_pos{0};
     char current_char{'\0'};
     TokenType current_token_type{TokenType::Undefined};
 
 public:
     LexerContext() = default;
 
-    void go_to_next_line() noexcept { ++current_line; }
+    void go_to_next_line() noexcept
+    {
+        ++current_line;
+        reset_current_char_pos();
+    }
     size_t get_current_line() const noexcept { return current_line; }
+
+    void go_to_next_char() noexcept { ++current_char_pos; }
+    void reset_current_char_pos() noexcept { current_char_pos = 0; }
+    size_t get_current_char_pos() const noexcept { return current_char_pos; }
 
     void set_current_token_type(TokenType new_type) noexcept
     {
@@ -30,7 +39,11 @@ public:
         return current_token_type;
     }
 
-    void set_current_char(char ch) noexcept { current_char = ch; }
+    void set_current_char(char ch) noexcept
+    {
+        current_char = ch;
+        go_to_next_char();
+    }
     char get_current_char() const noexcept { return current_char; }
 };
 

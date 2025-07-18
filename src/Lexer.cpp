@@ -46,7 +46,11 @@ void Lexer::process_sequence()
         tokens.clear();
         std::ostringstream error_message;
         error_message << "[FATAL] Invalid token \"" << current_token_value
-                      << "\" at line: " << context.get_current_line() << '\n';
+                      << "\" at line: " << context.get_current_line()
+                      << ", pos: "
+                      << context.get_current_char_pos() -
+                             current_token_value.size()
+                      << '\n';
         throw std::runtime_error(error_message.str());
     }
 }
