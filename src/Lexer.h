@@ -1,6 +1,5 @@
 #ifndef LEXER_H
 #include <fstream>
-#include <iostream>
 #include <list>
 #include <regex>
 

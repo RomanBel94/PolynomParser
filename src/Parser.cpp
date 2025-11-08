@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include <iostream>
 
 namespace LexerParser
 {

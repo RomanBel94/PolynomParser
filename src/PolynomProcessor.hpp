@@ -1,6 +1,6 @@
 #ifndef POLYNOM_PROCESSOR_H
 #include "Parser.h"
-#include <utility>
+#include <iostream>
 
 /*
     PolynomProcessor proceeds two polynoms with passed functional object.
