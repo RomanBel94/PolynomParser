@@ -1,4 +1,6 @@
 #include "Parser.h"
+#include <algorithm>
+#include <format>
 #include <iostream>
 
 namespace LexerParser
@@ -43,9 +45,8 @@ void Parser::preparsing_check()
     if (lexer.get_tokens().empty())
         throw std::runtime_error("[FATAL] Can't parse input file!\n");
 
-    if (std::count_if(std::begin(lexer.get_tokens()),
-                      std::end(lexer.get_tokens()), [](const Token& tok)
-                      { return tok.type == TokenType::Number; }) %
+    if (std::ranges::count_if(lexer.get_tokens(), [](const Token& tok)
+                              { return tok.type == TokenType::Number; }) %
         2)
         throw std::runtime_error(
             "[FATAL] Odd count of numbers is not permitted!\n");
@@ -95,9 +96,9 @@ void Parser::add_values(const Token& power, const Token& base)
     else
     {
         std::ostringstream error_message;
-        error_message << "[FATAL] Unexpected token: \"" << base.value
-                      << "\" at line: " << current_line << '\n';
-        throw std::runtime_error(error_message.str());
+        throw std::runtime_error(
+            std::format("[FATAL] Unexpected token: \"{}\" at line: {}\n",
+                        base.value, current_line));
     }
 }
 
@@ -107,11 +108,8 @@ void Parser::add_values(const Token& power, const Token& base)
 void Parser::parse()
 {
     extract_tokens();
-
     preparsing_check();
-
     parsing_loop();
-
     postparsing_check();
 }
 

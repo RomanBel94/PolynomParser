@@ -1,4 +1,6 @@
 #include "Lexer.h"
+#include <filesystem>
+#include <format>
 
 namespace LexerParser
 {
@@ -44,14 +46,10 @@ void Lexer::process_sequence()
     else
     {
         tokens.clear();
-        std::ostringstream error_message;
-        error_message << "[FATAL] Invalid token \"" << current_token_value
-                      << "\" at line: " << context.get_current_line()
-                      << ", pos: "
-                      << context.get_current_char_pos() -
-                             current_token_value.size()
-                      << '\n';
-        throw std::runtime_error(error_message.str());
+        throw std::runtime_error(std::format(
+            "[FATAL] Invalid token \"{}\" at line: {}, pos: {}\n",
+            current_token_value, context.get_current_line(),
+            context.get_current_char_pos() - current_token_value.size()));
     }
 }
 
@@ -119,7 +117,8 @@ void Lexer::reset_current_token()
 */
 void Lexer::extract()
 {
-    input_file.open("polynoms.txt", std::ios::in);
+    std::filesystem::path filename{"polynoms.txt"};
+    input_file.open(filename, std::ios::in);
     if (!input_file.is_open())
     {
         tokens.clear();

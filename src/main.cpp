@@ -1,4 +1,5 @@
 #include "PolynomProcessor.hpp"
+#include <format>
 
 int main()
 {
@@ -18,14 +19,14 @@ int main()
         switch (token.type)
         {
         case LexerParser::TokenType::Newline:
-            std::cout << "[DEBUG] Token type: Newline; token value: \\n\n";
+            std::cout << "[DEBUG] Token type: Newline;   token value: \\n\n";
             break;
         case LexerParser::TokenType::Number:
-            std::cout << "[DEBUG] Token type: Number; token value: "
+            std::cout << "[DEBUG] Token type: Number;    token value: "
                       << token.value << '\n';
             break;
         case LexerParser::TokenType::Eof:
-            std::cout << "[DEBUG] Token type: Eof; token value: eof()\n";
+            std::cout << "[DEBUG] Token type: Eof;       token value: eof()\n";
             break;
         default:
             std::cout << "[DEBUG] Token type: Undefined; token value: "
@@ -43,13 +44,15 @@ int main()
         std::cerr << ex.what();
     }
 
+    constexpr auto polynom_format = "[DEBUG] Power {:>6}, base: {:<6}\n";
+
     std::cout << "[DEBUG] Polynom1: \n";
     for (const auto& [power, base] : parser.get_polynom1())
-        std::cout << "[DEBUG] Power: " << power << ", base: " << base << '\n';
+        std::cout << std::format(polynom_format, power, base);
 
     std::cout << "[DEBUG] Polynom2: \n";
     for (const auto& [power, base] : parser.get_polynom2())
-        std::cout << "[DEBUG] Power: " << power << ", base: " << base << '\n';
+        std::cout << std::format(polynom_format, power, base);
 
     PolynomProcessor<std::plus<int>> adder;
     auto result = adder();
