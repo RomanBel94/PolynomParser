@@ -1,5 +1,6 @@
 #include "PolynomProcessor.hpp"
 #include <format>
+#include <string_view>
 
 int main()
 {
@@ -44,7 +45,8 @@ int main()
         std::cerr << ex.what();
     }
 
-    constexpr auto polynom_format = "[DEBUG] Power {:>6}, base: {:<6}\n";
+    constexpr std::string_view polynom_format =
+        "[DEBUG] Power {:>6}, base: {:<6}\n";
 
     std::cout << "[DEBUG] Polynom1: \n";
     for (const auto& [power, base] : parser.get_polynom1())
