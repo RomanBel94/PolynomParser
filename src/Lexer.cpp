@@ -41,6 +41,7 @@ void Lexer::process_sequence()
         current_token_value += context.get_current_char();
         context.set_current_char(input_file.get());
     }
+
     if (std::regex_match(current_token_value, number_regex))
         context.set_current_token_type(TokenType::Number);
     else
@@ -119,6 +120,7 @@ void Lexer::extract()
 {
     std::filesystem::path filename{"polynoms.txt"};
     input_file.open(filename, std::ios::in);
+
     if (!input_file.is_open())
     {
         tokens.clear();

@@ -95,7 +95,6 @@ void Parser::add_values(const Token& power, const Token& base)
     }
     else
     {
-        std::ostringstream error_message;
         throw std::runtime_error(
             std::format("[FATAL] Unexpected token: \"{}\" at line: {}\n",
                         base.value, current_line));

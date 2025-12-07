@@ -25,12 +25,11 @@ struct Token
     }
     ~Token() = default;
 
-    inline bool operator==(TokenType rhs) const { return this->type == rhs; }
+    bool operator==(TokenType rhs) const { return this->type == rhs; }
+    bool operator!=(TokenType rhs) const { return this->type != rhs; }
 
-    inline bool operator!=(TokenType rhs) const { return this->type != rhs; }
-
-    inline operator TokenType() const { return type; }
-    inline operator int() const { return value; }
+    operator TokenType() const { return type; }
+    operator int() const { return value; }
 
 private:
     Token() = delete;
